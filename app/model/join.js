@@ -17,15 +17,31 @@ module.exports = app => {
     const Schema = mongoose.Schema;
 
     const JoinSchema = new Schema({
-        title: { type: String, unique: true},
+        title: {
+            type: String,
+            unique: true
+        },
         children: [{
-            job_desc: { type: String },
-            job_require: { type: String },
-            address: { type: String },
-            sort: { type: Number}
+            job_desc: {
+                type: String
+            },
+            job_require: {
+                type: String
+            },
+            address: {
+                type: String
+            },
+            sort: {
+                type: Number
+            }
         }],
-        sort: { type: Number},
-        update_time: { type: Date, default: Date.now }
+        sort: {
+            type: Number
+        },
+        update_time: {
+            type: Date,
+            default: Date.now
+        }
     })
 
     return mongoose.model('Join', JoinSchema)

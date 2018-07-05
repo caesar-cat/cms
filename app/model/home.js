@@ -15,13 +15,36 @@ module.exports = app => {
 
     const BannerSchema = new Schema({
         banner: [{
-            img: { type: Schema.ObjectId, ref: 'Image' },
-            desc: { type: String },
-            sort: { type: Number},
+            img: {
+                type: Schema.ObjectId,
+                ref: 'Image'
+            },
+            desc: {
+                type: String
+            },
+            sort: {
+                type: Number
+            },
         }],
-        module: [{ text: String, img: { type: Schema.ObjectId, ref: 'Image'}, sort: Number }],
-        partner:[{img: { type: Schema.ObjectId, ref: 'Image' }, sort: Number}],
-        update_time: { type: Date, default: Date.now }
+        module: [{
+            text: String,
+            img: {
+                type: Schema.ObjectId,
+                ref: 'Image'
+            },
+            sort: Number
+        }],
+        partner: [{
+            img: {
+                type: Schema.ObjectId,
+                ref: 'Image'
+            },
+            sort: Number
+        }],
+        update_time: {
+            type: Date,
+            default: Date.now
+        }
     })
 
     return mongoose.model('Banner', BannerSchema)

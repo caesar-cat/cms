@@ -12,10 +12,21 @@ module.exports = app => {
     const Schema = mongoose.Schema;
 
     const NavSchema = new Schema({
-        title: { type: String, unique: true },
-        href: { type: String },
-        children: [{title: String, href: String}],
-        update_time: { type: Date, default: Date.now }
+        title: {
+            type: String,
+            unique: true
+        },
+        href: {
+            type: String
+        },
+        children: [{
+            title: String,
+            href: String
+        }],
+        update_time: {
+            type: Date,
+            default: Date.now
+        }
     })
 
     return mongoose.model('Nav', NavSchema)

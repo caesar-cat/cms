@@ -12,10 +12,20 @@ module.exports = app => {
     const Schema = mongoose.Schema;
 
     const UserSchema = new Schema({
-        userName: { type: String, unique: true },
-        password: { type: String },
-        level: { type: Number },
-        update_time: { type: Date, default: Date.now }
+        userName: {
+            type: String,
+            unique: true
+        },
+        password: {
+            type: String
+        },
+        level: {
+            type: Number
+        },
+        update_time: {
+            type: Date,
+            default: Date.now
+        }
     })
 
     return mongoose.model('User', UserSchema)

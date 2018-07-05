@@ -14,12 +14,27 @@ module.exports = app => {
     const Schema = mongoose.Schema;
 
     const ProductSchema = new Schema({
-        name: { type: String, unique: true },
-        header_img: { type: Schema.ObjectId, ref: 'Product' },
-        main_title: { type: String },
-        sub_title: { type: String },
-        desc: { type: String },
-        update_time: { type: Date, default: Date.now }
+        name: {
+            type: String,
+            unique: true
+        },
+        header_img: {
+            type: Schema.ObjectId,
+            ref: 'Product'
+        },
+        main_title: {
+            type: String
+        },
+        sub_title: {
+            type: String
+        },
+        desc: {
+            type: String
+        },
+        update_time: {
+            type: Date,
+            default: Date.now
+        }
     })
 
     return mongoose.model('Product', ProductSchema)

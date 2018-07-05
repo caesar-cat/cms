@@ -11,9 +11,16 @@ module.exports = app => {
     const Schema = mongoose.Schema;
 
     const ImageSchema = new Schema({
-        href: { type: String },
-        desc: { type: String },
-        update_time: { type: Date, default: Date.now }
+        href: {
+            type: String
+        },
+        desc: {
+            type: String
+        },
+        update_time: {
+            type: Date,
+            default: Date.now
+        }
     })
 
     return mongoose.model('Image', ImageSchema)
