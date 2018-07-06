@@ -2,7 +2,7 @@
   <el-container>
     <el-aside width="240px" style="background-color: #424950">
       <div class="logo" style="display: block; height: 60px; width: 240px; background: #545c64">
-        <span style="display: block; padding: 22px 0 0 0; color: white;">LOGO</span>
+        <span style="display: block; padding: 22px 0 0 0; color: grey;">LOGO</span>
       </div>
       <el-menu
       default-active="2"
@@ -15,7 +15,7 @@
       <el-submenu index="1">
         <template class="sub-title" slot="title">
           <i class="el-icon-location"></i>
-          <span>Navigator One</span>
+          <span>首页配置</span>
         </template>
         <el-menu-item index="1-1">item one</el-menu-item>
         <el-menu-item index="1-2">item one</el-menu-item>
@@ -27,15 +27,15 @@
       </el-submenu>
       <el-menu-item index="2">
         <i class="el-icon-menu"></i>
-        <span>Navigator Two</span>
+        <span>招聘信息配置</span>
       </el-menu-item>
       <el-menu-item index="3">
         <i class="el-icon-document"></i>
-        <span>Navigator Three</span>
+        <span>岗位申请</span>
       </el-menu-item>
       <el-menu-item index="4">
         <i class="el-icon-setting"></i>
-        <span>Nenu default121</span>
+        <span>轮播图配置</span>
       </el-menu-item>
     </el-menu>
     </el-aside>
@@ -48,14 +48,6 @@
       </el-header>
     
       <el-main>
-        <el-table :data="tableData">
-          <el-table-column prop="date" label="Date" width="140">
-          </el-table-column>
-          <el-table-column prop="name" label="Name" width="120">
-          </el-table-column>
-          <el-table-column prop="address" label="Address">
-          </el-table-column>
-        </el-table>
       </el-main>
     </el-container>
   </el-container>
@@ -89,10 +81,12 @@ export default {
 
 .el-menu-item {
   min-width: 240px;
+  text-align: left;
 }
 
 .el-submenu {
   min-width: 240px;
+  text-align: left;
 }
 
 .el-icon-d-arrow-left:active {
