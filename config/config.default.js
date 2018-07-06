@@ -11,7 +11,7 @@ module.exports = appInfo => {
         file: path.join(appInfo.root, 'logs', appInfo.name, 'egg-schedule.log'),
       },
     },
-    middleware: ['handlerError', 'gzip'],
+    middleware: ['gzip'],
     gzip: {
       threshold: 1024, // 小于 1k 的响应体不压缩
     },
@@ -23,6 +23,10 @@ module.exports = appInfo => {
           poolSize: 10
         }
       }
+    },
+    static: {
+      prefix: '/',
+      dir: path.join(appInfo.baseDir, 'app/public')
     }
   }
 };
