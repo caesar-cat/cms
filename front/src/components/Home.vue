@@ -7,8 +7,6 @@
       <el-menu
       default-active="2"
       class="el-menu-vertical-demo"
-      @open="handleOpen"
-      @close="handleClose"
       background-color="#424950"
       text-color="#fff"
       active-text-color="#ffd04b">
@@ -43,7 +41,14 @@
     <el-container style="margin-left: 240px;">
       <el-header>
         <div class="user" style="float: right; height: 42px; margin: 8px 0 0 0;">
-          <i class="el-icon-picture" style="font-size: 32px;"></i>
+          <el-dropdown trigger="click">
+            <a class="el-dropdown-link">
+              <i class="el-icon-picture" style="font-size: 32px;"></i>
+            </a>
+            <el-dropdown-menu slot="dropdown">
+              <el-dropdown-item><p @click="quit()">退出登录</p></el-dropdown-item>
+            </el-dropdown-menu>
+          </el-dropdown>
         </div>
       </el-header>
     
@@ -54,11 +59,18 @@
 </template>
 
 <script>
+import { delCookie } from '../utils/cookie.js'
 export default {
   name: 'HelloWorld',
   data () {
     return {
       isCollapse: false
+    }
+  },
+  methods: {
+    quit() {
+      delCookie('account');
+      this.$router.push('/login');
     }
   }
 }
