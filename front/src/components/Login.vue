@@ -56,6 +56,22 @@ export default {
         this.$message.error('请输入完整登录信息');
       } else if (this.formLabelAlign.account === 'admin' && this.formLabelAlign.password === 'admin') {
         setCookie('account', this.formLabelAlign.account, 1000 * 60);
+        // 将历史用户名存入localStroage
+        let users = JSON.parse(localStorage.getItem('users'));
+        if (users) {
+          // 去重
+          if (users.indexOf(this.formLabelAlign.account) >= 0) {
+            this.$router.push('/');
+            return;
+          } else {
+            users.push(this.formLabelAlign.account);
+            localStorage.setItem('users', JSON.stringify(users));
+          }
+        } else {
+          let temp = [];
+          temp.push(this.formLabelAlign.account);
+          localStorage.setItem('users', JSON.stringify(temp));
+        }
         this.$router.push('/');
       } else {
         this.$message.error('用户名或密码错误');
@@ -73,9 +89,23 @@ export default {
       };
     },
     loadAll() {
-      return [
-        { 'value': 'admin' }
-      ];
+      const users = JSON.parse(localStorage.getItem('users'));
+      const value = [];
+      const newList = [];
+      if (users) {
+        const keys = Object.keys(users);
+        for (let i = 0, len = keys.length; i < len; i += 1) {
+          const key = keys[i];
+          value[i] = users[key];
+          const arr = {
+            value: value[i]
+          };
+          newList.push(arr);
+        }
+        return newList;
+      } else {
+        return newList;
+      }
     }
   }
 }
