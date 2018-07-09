@@ -4,13 +4,16 @@
     <div class="login-container">
       <el-form label-position="right" label-width="0" :model="formLabelAlign">
         <el-form-item>
-          <el-input
+          <el-autocomplete
             type="text"
-            prefix-icon="el-icon-edit"
-            placeholder="用户名"
+            class="inline-input"
             v-model="formLabelAlign.account"
+            prefix-icon="el-icon-edit"
+            :fetch-suggestions="querySearch"
+            placeholder="用户名"
+            :trigger-on-focus="false"
           >
-          </el-input>
+          </el-autocomplete>
         </el-form-item>
         <el-form-item>
           <el-input
@@ -28,7 +31,7 @@
 </template>
 
 <script>
-import { setCookie } from '../utils/cookie.js'
+import { setCookie, getCookie } from '../utils/cookie.js'
 export default {
   data() {
     return {
@@ -36,13 +39,37 @@ export default {
       formLabelAlign: {
         account: '',
         password: ''
-      }
+      },
+      links: []
     }
+  },
+  mounted() {
+    let flag = getCookie('account');
+    if (flag !== '') {
+      this.$router.push('/');
+    }
+    this.links = this.loadAll();
   },
   methods: {
     login() {
       setCookie('account', this.formLabelAlign.account, 1000 * 60);
       this.$router.push('/');
+    },
+    querySearch(queryString, cb) {
+      var links = this.links;
+      var results = queryString ? links.filter(this.createFilter(queryString)) : links;
+      // 调用 callback 返回建议列表的数据
+      cb(results);
+    },
+    createFilter(queryString) {
+      return (links) => {
+        return (links.value.toLowerCase().indexOf(queryString.toLowerCase()) === 0);
+      };
+    },
+    loadAll() {
+      return [
+        { 'value': 'admin' }
+      ];
     }
   }
 }
@@ -71,5 +98,8 @@ export default {
     margin:0 auto;
     font-size:20px;
     margin-top: 25px;
+  }
+  .inline-input {
+    width: 350px;
   }
 </style>
