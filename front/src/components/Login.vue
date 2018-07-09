@@ -52,8 +52,14 @@ export default {
   },
   methods: {
     login() {
-      setCookie('account', this.formLabelAlign.account, 1000 * 60);
-      this.$router.push('/');
+      if (this.formLabelAlign.account === '' || this.formLabelAlign.password === '') {
+        this.$message.error('请输入完整登录信息');
+      } else if (this.formLabelAlign.account === 'admin' && this.formLabelAlign.password === 'admin') {
+        setCookie('account', this.formLabelAlign.account, 1000 * 60);
+        this.$router.push('/');
+      } else {
+        this.$message.error('用户名或密码错误');
+      }
     },
     querySearch(queryString, cb) {
       var links = this.links;

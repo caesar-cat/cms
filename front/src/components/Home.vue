@@ -59,7 +59,7 @@
 </template>
 
 <script>
-import { delCookie } from '../utils/cookie.js'
+import { delCookie, getCookie } from '../utils/cookie.js'
 export default {
   name: 'HelloWorld',
   data () {
@@ -67,10 +67,19 @@ export default {
       isCollapse: false
     }
   },
+  mounted() {
+    let flag = getCookie('account');
+    if (flag === '') {
+      this.$router.push('/login');
+    }
+  },
   methods: {
     quit() {
-      delCookie('account');
-      this.$router.push('/login');
+      let flag = getCookie('account');
+      if(flag) {
+        delCookie('account');
+        this.$router.push('/login');
+      }
     }
   }
 }
