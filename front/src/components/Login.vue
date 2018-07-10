@@ -102,10 +102,8 @@ export default {
           };
           newList.push(arr);
         }
-        return newList;
-      } else {
-        return newList;
       }
+      return newList;
     }
   }
 }

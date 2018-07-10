@@ -46,7 +46,7 @@
               <i class="el-icon-picture" style="font-size: 32px;"></i>
             </a>
             <el-dropdown-menu slot="dropdown">
-              <el-dropdown-item><p @click="quit()">退出登录</p></el-dropdown-item>
+              <el-dropdown-item><p @click="logout()">退出登录</p></el-dropdown-item>
             </el-dropdown-menu>
           </el-dropdown>
         </div>
@@ -74,7 +74,7 @@ export default {
     }
   },
   methods: {
-    quit() {
+    logout() {
       let flag = getCookie('account');
       if(flag) {
         delCookie('account');
