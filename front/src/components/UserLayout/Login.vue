@@ -31,7 +31,7 @@
 </template>
 
 <script>
-import { setCookie, getCookie } from '../utils/cookie.js'
+import { setCookie, getCookie } from '../../utils/cookie.js'
 export default {
   data() {
     return {
