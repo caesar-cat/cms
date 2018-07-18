@@ -7,11 +7,6 @@
     }
 </script>
 <style lang="less">
-    .el-row {
-    margin-bottom: 10px;
-    }
-    .el-pagination {
-        text-align: right;
-    }
+  
 </style>
 

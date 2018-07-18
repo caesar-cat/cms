@@ -261,9 +261,6 @@ export default {
 };
 </script>
 <style lang="less" scoped>
-.el-row {
-  margin-bottom: 10px;
-}
 .add-btn {
   margin-top: 5px;
   width: 100%;

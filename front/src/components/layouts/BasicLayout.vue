@@ -13,33 +13,29 @@
       <el-submenu index="1">
         <template class="sub-title" slot="title">
           <i class="el-icon-location"></i>
-          <span>首页配置</span>
+          <span>页面配置</span>
         </template>
-        <el-menu-item index="1-1">item one</el-menu-item>
-        <el-menu-item index="1-2">item one</el-menu-item>
-        <el-menu-item index="1-3">item three</el-menu-item>
-        <el-submenu index="1-4">
-          <template class="sub-title" slot="title">item four</template>
-          <el-menu-item index="1-4-1">item one</el-menu-item>
-        </el-submenu>
+        <el-menu-item index="1-1" :route="{path: '/pages/home'}">首页配置</el-menu-item>
       </el-submenu>
-      <el-menu-item index="2">
-        <i class="el-icon-menu"></i>
-        <span>简历投递列表</span>
-      </el-menu-item>
-      <el-submenu index="3">
+     
+      <el-submenu index="2">
         <template class="sub-title" slot="title">
           <i class="el-icon-document"></i>
           <span>招聘岗位管理</span>
         </template>
-        <el-menu-item index="3-1" :route="{path: '/job/firstType'}">一级分类</el-menu-item>
-        <el-menu-item index="3-2" :route="{path: '/job/secondType'}">二级分类</el-menu-item>
-        <el-menu-item index="3-3" :route="{path: '/job/jobList'}">职位列表</el-menu-item>
+        <el-menu-item index="2-1" :route="{path: '/job/firstType'}">一级分类</el-menu-item>
+        <el-menu-item index="2-2" :route="{path: '/job/secondType'}">二级分类</el-menu-item>
+        <el-menu-item index="2-3" :route="{path: '/job/list'}">职位列表</el-menu-item>
+        <el-menu-item index="2-4" :route="{path: '/job/deliver'}">投递记录</el-menu-item>
       </el-submenu>
-      <el-menu-item index="4">
-        <i class="el-icon-setting"></i>
-        <span>轮播图配置</span>
-      </el-menu-item>
+
+      <el-submenu index="3">
+        <template class="sub-title" slot="title">
+          <i class="el-icon-news"></i>
+          <span>用户管理</span>
+        </template>
+        <el-menu-item index="2-1" :route="{path: '/users/list'}">用户列表</el-menu-item>
+      </el-submenu>
     </el-menu>
     </el-aside>
   
@@ -69,7 +65,7 @@
 
 <script>
 import { delCookie, getCookie } from "../../utils/cookie.js";
-import  CommonHeader from '../Common/Header'
+import  CommonHeader from '../common/Header'
 export default {
   name: "HelloWorld",
   data() {

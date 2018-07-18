@@ -1,7 +1,30 @@
 <template>
     <el-card style="text-align: left">
-        <el-row>
-            <el-button type="primary" icon="el-icon-plus" @click="dialogFormVisible = true">新增</el-button>
+        <el-row :gutter="20" style="margin-left: 0">
+            <el-input
+                size="small"
+                placeholder="请输入职位名称"
+                style="width: 200px"
+            >
+            </el-input>
+            <el-select placeholder="请选择分类" size="small">
+                <el-option
+                    v-for="item in second_type"
+                    :key="item"
+                    :label="item"
+                    :value="item">
+                </el-option>
+            </el-select>
+            <el-select placeholder="请选择工作地点" size="small">
+                <el-option
+                    v-for="item in address"
+                    :key="item"
+                    :label="item"
+                    :value="item">
+                </el-option>
+            </el-select>
+                <el-button icon="el-icon-search" size="small">查询</el-button>
+                <el-button type="primary" icon="el-icon-plus" size="small" @click="toggleModal">新增</el-button>
         </el-row>
         <el-row>
             <el-table
@@ -26,7 +49,7 @@
                      <template slot-scope="scope">
                         <el-button
                             size="mini"
-                            @click="editRow(scope.$index, scope.row)">
+                            @click="toggleModal(scope.row)">
                             编辑
                         </el-button>
                         <el-button
@@ -65,8 +88,8 @@
                 </el-form-item>
             </el-form>
             <div slot="footer" class="dialog-footer">
-                <el-button @click="dialogFormVisible = false">取 消</el-button>
-                <el-button type="primary" @click="dialogFormVisible = false">确 定</el-button>
+                <el-button @click="toggleModal">取 消</el-button>
+                <el-button type="primary" @click="toggleModal">确 定</el-button>
             </div>
         </el-dialog>
     </el-card>
@@ -109,25 +132,42 @@ export default {
           date: "2016-05-02"
         }
       ],
-      dialogFormVisible : false,
+      dialogFormVisible: false,
       form: {
-          title: '',
-          second_type: '',
-          job_desc: '',
-          job_require: '',
-          address:''
+        title: "",
+        second_type: "",
+        job_desc: "",
+        job_require: "",
+        address: ""
       },
-      labelWidth: '120px'
+      second_type: ["软件开发", "技术安全", "前端"],
+      address: ["深圳", "上海", "背景"],
+      labelWidth: "120px"
     };
+  },
+
+  methods: {
+    toggleModal() {
+      this.dialogFormVisible = !this.dialogFormVisible;
+    },
+
+    //删除
+    handleDelete(i, row) {
+      this.$confirm("确定删除此行?", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning"
+      }).then(() => {
+        //TODO 调用删除接口
+        this.tableData = this.tableData.filter((item, index) => {
+          return index !== i;
+        });
+      });
+    }
   }
 };
 </script>
 <style lang="less" scoped>
-.el-row {
-  margin-bottom: 10px;
-}
-.el-pagination {
-  text-align: right;
-}
+
 </style>
 
