@@ -20,4 +20,10 @@ export default {
   text-align: center;
   color: #2c3e50;
 }
+.el-row {
+  margin-bottom: 10px;
+}
+.el-pagination {
+    text-align: right;
+}
 </style>

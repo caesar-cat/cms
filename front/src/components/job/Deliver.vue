@@ -25,7 +25,7 @@
                 prop="address"
                 label="操作">
                 <template slot-scope="scope">
-                    <el-button type="text">下载</el-button>
+                    <el-button type="text" size="small">下载</el-button>
                 </template>
             </el-table-column>
         </el-table>

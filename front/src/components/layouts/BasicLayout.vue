@@ -34,7 +34,7 @@
           <i class="el-icon-news"></i>
           <span>用户管理</span>
         </template>
-        <el-menu-item index="2-1" :route="{path: '/users/list'}">用户列表</el-menu-item>
+        <el-menu-item index="3-1" :route="{path: '/users/list'}">用户列表</el-menu-item>
       </el-submenu>
     </el-menu>
     </el-aside>
