@@ -15,6 +15,11 @@ module.exports = appInfo => {
     gzip: {
       threshold: 1024, // 小于 1k 的响应体不压缩
     },
+    security: {
+      csrf: {
+        enable: false,
+      },
+    },
     mongoose: {
       client: {
         url: 'mongodb://localhost:27017/cms',

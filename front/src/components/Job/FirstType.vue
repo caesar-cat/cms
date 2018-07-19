@@ -91,6 +91,7 @@
 </template>
 <script>
 import _ from 'lodash'
+import request from '../../utils/request'
 export default {
   data() {
     return {
@@ -141,6 +142,12 @@ export default {
     };
   },
 
+  mounted() {
+    request('/job/first_type/fetch').then(res => {
+      console.log(res)
+    })
+  },
+
   methods: {
     //添加行
     addNew() {
@@ -160,7 +167,16 @@ export default {
       delete result.isNew;
       result.editable = false;
       //TODO 调用新增接口
-      this.tableData[i] = _.cloneDeep(this.cache[i]);
+      request('/job/first_type/add', {
+        method: 'POST',
+        body: {
+          title: result.title,
+          sort: result.sort
+        }
+      }).then(res => {
+        console.log(res)
+      })
+      // this.tableData[i] = _.cloneDeep(this.cache[i]);
     },
     //编辑行
     editRow(i, row) {
