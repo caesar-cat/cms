@@ -3,7 +3,6 @@
         <el-row>
             <el-table
                 :data="tableData"
-                :default-sort = "{prop: 'sort', order: 'ascending'}"
                 border
                 v-loading = "loading"
                 style="width: 100%">
