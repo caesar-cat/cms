@@ -3,7 +3,9 @@
         <el-row>
             <el-table
                 :data="tableData"
+                :default-sort = "{prop: 'sort', order: 'ascending'}"
                 border
+                v-loading = "loading"
                 style="width: 100%">
                 <el-table-column
                 label="一级分类标题"
@@ -19,8 +21,10 @@
                 </template>
                 </el-table-column>
                 <el-table-column
-                label="排序"
-                align="left"
+                  label="排序"
+                  sortable
+                  align="left"
+                  prop="sort"
                 >
                  <template slot-scope="scope">
                     <template v-if="scope.row.editable">
@@ -32,11 +36,13 @@
                   </template>
                 </el-table-column>
                 <el-table-column
-                label="修改时间"
-                align="left"
+                  label="创建时间"
+                  sortable
+                  align="left"
+                  prop="update_time"
                 >
                  <template slot-scope="scope">
-                    <p>{{ scope.row.date }}</p>
+                    <p>{{ moment(scope.row.update_time).format("YYYY-MM-DD HH:mm:ss") }}</p>
                   </template>
                 </el-table-column>
                 <el-table-column label="操作" align="left">
@@ -90,62 +96,23 @@
     </el-card>
 </template>
 <script>
-import _ from 'lodash'
-import request from '../../utils/request'
+import _ from "lodash";
+import request from "../../utils/request";
 export default {
   data() {
     return {
-      tableData: [
-        {
-          date: this.moment().format("YYYY-MM-DD HH:mm:ss"),
-          title: "技术方向",
-          sort: "1"
-        },
-        {
-          date: this.moment().format("YYYY-MM-DD HH:mm:ss"),
-          title: "产品方向",
-          sort: "2"
-        },
-        {
-          date: this.moment().format("YYYY-MM-DD HH:mm:ss"),
-          title: "设计方向",
-          sort: "3"
-        },
-        {
-          date: this.moment().format("YYYY-MM-DD HH:mm:ss"),
-          title: "市场方向",
-          sort: "4"
-        }
-      ],
-      cache: [
-        {
-          date: this.moment().format("YYYY-MM-DD HH:mm:ss"),
-          title: "技术方向",
-          sort: "1"
-        },
-        {
-          date: this.moment().format("YYYY-MM-DD HH:mm:ss"),
-          title: "产品方向",
-          sort: "2"
-        },
-        {
-          date: this.moment().format("YYYY-MM-DD HH:mm:ss"),
-          title: "设计方向",
-          sort: "3"
-        },
-        {
-          date: this.moment().format("YYYY-MM-DD HH:mm:ss"),
-          title: "市场方向",
-          sort: "4"
-        }
-      ]
+      tableData: [],
+      cache: [],
+      loading: true
     };
   },
 
   mounted() {
-    request('/job/first_type/fetch').then(res => {
-      console.log(res)
-    })
+    request("/job/first_type/fetch").then(res => {
+      this.loading = false;
+      this.tableData = _.cloneDeep(res.result);
+      this.cache = _.cloneDeep(res.result);
+    });
   },
 
   methods: {
@@ -158,25 +125,29 @@ export default {
         editable: true,
         isNew: true
       };
-      this.tableData = this.tableData.concat(newData);
-      this.cache = this.cache.concat(newData);
+      this.tableData = this.tableData.concat(_.cloneDeep(newData));
+      this.cache = this.cache.concat(_.cloneDeep(newData));
     },
     //确认添加行
     addRow(i) {
-      const result = this.cache[i]
-      delete result.isNew;
-      result.editable = false;
+      let params = this.cache[i];
+      delete params.isNew;
       //TODO 调用新增接口
-      request('/job/first_type/add', {
-        method: 'POST',
+      request("/job/first_type/add", {
+        method: "POST",
         body: {
-          title: result.title,
-          sort: result.sort
+          title: params.title,
+          sort: params.sort
         }
       }).then(res => {
-        console.log(res)
-      })
-      // this.tableData[i] = _.cloneDeep(this.cache[i]);
+        if (res.code === 0) {
+          params.editable = false;
+          this.$message.success("添加成功");
+          this.$set(this.tableData, i, params);
+        } else {
+          this.$message.error(res.msg);
+        }
+      });
     },
     //编辑行
     editRow(i, row) {
@@ -189,13 +160,23 @@ export default {
     },
     //保存某行数据
     saveRow(i, row) {
+      let params = this.cache[i];
       //TODO 调用保存接口
-      this.tableData = this.tableData.map((item, index) => {
-        if (index === i) {
-          item = _.cloneDeep(this.cache[i]);
-          item.editable = false;
+      request("/job/first_type/update", {
+        method: "POST",
+        body: {
+          _id: params._id,
+          title: params.title,
+          sort: params.sort
         }
-        return item;
+      }).then(res => {
+        if (res.code === 0) {
+          params.editable = false;
+          this.$message.success("修改成功");
+          this.$set(this.tableData, i, params);
+        } else {
+          this.$message.error(res.msg);
+        }
       });
     },
     //删除
@@ -205,9 +186,21 @@ export default {
         cancelButtonText: "取消",
         type: "warning"
       }).then(() => {
-          //TODO 调用删除接口
-        this.tableData = this.tableData.filter((item, index) => {
-          return index !== i;
+        //TODO 调用删除接口
+        request("/job/first_type/remove", {
+          method: "POST",
+          body: {
+            _id: row._id
+          }
+        }).then(res => {
+          if (res.code === 0) {
+            this.$message.success("删除成功");
+            this.tableData = this.tableData.filter((item, index) => {
+              return index !== i;
+            });
+          } else {
+            this.$message.error(res.msg);
+          }
         });
       });
     },

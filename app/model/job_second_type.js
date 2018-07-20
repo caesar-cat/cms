@@ -14,7 +14,7 @@ module.exports = app => {
     const JobSecondTypeSchema = new Schema({
         first_type: {
             type: Schema.ObjectId,
-            ref: 'JobFirstType' 
+            ref: 'JobFirstType'
         },
         title: {
             type: String,
@@ -27,6 +27,8 @@ module.exports = app => {
             type: Date,
             default: Date.now
         }
+    }, {
+        versionKey: false
     })
 
     return mongoose.model('JobSecondType', JobSecondTypeSchema)

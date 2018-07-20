@@ -1,3 +1,4 @@
+//错误处理中间件
 module.exports = () => {
     return async function handlerError(ctx, next) {
         await next()
@@ -10,6 +11,13 @@ module.exports = () => {
                 }
             } else {
                 ctx.body = `<h1>${error}</h1>`
+            }
+        }
+        if(/^2.+/.test(ctx.body.code)) {
+            ctx.logger.error(ctx.body.err)
+            ctx.body = {
+                code: ctx.body.code,
+                msg: ctx.body.msg
             }
         }
         

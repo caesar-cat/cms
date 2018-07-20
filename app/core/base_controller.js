@@ -4,16 +4,20 @@ class BaseController extends Controller {
     return this.ctx.session.user;
   }
 
-  success(data) {
+  success(result) {
     this.ctx.body = {
-      success: true,
-      data,
+      code: 0,
+      msg: 'success',
+      result,
     };
   }
 
-  notFound(msg) {
-    msg = msg || 'not found';
-    this.ctx.throw(404, msg);
+  dbError(err) {
+    this.ctx.body = {
+      code: 20001,
+      msg: 'db error',
+      err
+    }
   }
 }
 module.exports = BaseController;

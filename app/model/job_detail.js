@@ -16,18 +16,28 @@ module.exports = app => {
     const Schema = mongoose.Schema;
 
     const JobDetailSchema = new Schema({
-        title: { type: String },
+        title: {
+            type: String
+        },
         second_type: {
             type: Schema.ObjectId,
             ref: 'JobSecondType'
         },
-        job_desc: { type: String },
-        job_require: { type: String },
-        address: { type: String },
+        job_desc: {
+            type: String
+        },
+        job_require: {
+            type: String
+        },
+        address: {
+            type: String
+        },
         update_time: {
             type: Date,
             default: Date.now
         }
+    }, {
+        versionKey: false
     })
 
     return mongoose.model('JobDetail', JobDetailSchema)

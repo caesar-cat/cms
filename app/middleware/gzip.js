@@ -1,3 +1,4 @@
+//响应体压缩中间件
 const zlib = require('zlib');
 
 module.exports = options => {

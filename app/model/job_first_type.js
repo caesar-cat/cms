@@ -23,6 +23,8 @@ module.exports = app => {
             type: Date,
             default: Date.now
         }
+    }, {
+        versionKey: false
     })
 
     return mongoose.model('JobFirstType', JobFirstTypeSchema)
