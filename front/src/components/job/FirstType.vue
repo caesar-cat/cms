@@ -107,7 +107,9 @@ export default {
   },
 
   mounted() {
-    request("/job/first_type/fetch").then(res => {
+    request("/job/first_type/fetch", {
+      method: 'POST'
+    }).then(res => {
       this.loading = false;
       this.tableData = _.cloneDeep(res.result);
       this.cache = _.cloneDeep(res.result);

@@ -54,7 +54,8 @@ class JobController extends Controller {
 
     //查询二级菜单
     async fetchSecondType() {
-        const result = await this.ctx.model.JobSecondType.find().populate({path: 'first_type', select:'title'});
+        const params = this.ctx.request.body;
+        let result = await this.ctx.model.JobSecondType.find(params)
         this.success(result)
     }
     
@@ -77,9 +78,9 @@ class JobController extends Controller {
 
     //删除二级菜单
     async removeSecondType() {
-        const { title } = this.ctx.request.body;
+        const { _id } = this.ctx.request.body;
         try {
-            let result = await this.ctx.model.JobSecondType.remove({title})
+            let result = await this.ctx.model.JobSecondType.remove({_id})
             this.success(result)
         }catch (err) {
             if(err) {
@@ -92,7 +93,7 @@ class JobController extends Controller {
     async updateSecondType() {
         const { title, sort, first_type, _id } = this.ctx.request.body
         try {
-            let result = this.ctx.model.JobFirstType.findByIdAndUpdate(_id, { title, sort, first_type })
+            let result = await this.ctx.model.JobSecondType.findByIdAndUpdate(_id, { title, sort, first_type })
             this.success(result)
         }catch (err) {
             if(err) {

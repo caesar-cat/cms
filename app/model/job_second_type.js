@@ -13,7 +13,7 @@ module.exports = app => {
 
     const JobSecondTypeSchema = new Schema({
         first_type: {
-            type: Schema.ObjectId,
+            type: Schema.Types.ObjectId,
             ref: 'JobFirstType'
         },
         title: {
