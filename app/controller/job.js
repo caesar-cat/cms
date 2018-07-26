@@ -4,7 +4,7 @@ class JobController extends Controller {
  
     //查询一级菜单
     async fetchFirstType() {
-        const result = await this.ctx.model.JobFirstType.find();
+        const result = await this.ctx.model.JobFirstType.find().sort({'sort': 1});
         this.success(result)
     }
 
@@ -55,7 +55,7 @@ class JobController extends Controller {
     //查询二级菜单
     async fetchSecondType() {
         const params = this.ctx.request.body;
-        let result = await this.ctx.model.JobSecondType.find(params)
+        let result = await this.ctx.model.JobSecondType.find(params).sort({'sort': 1})
         this.success(result)
     }
     
@@ -104,20 +104,57 @@ class JobController extends Controller {
 
     //查询职位列表
     async fetchJobList() {
-        const { pageSize, currentPage } = this.ctx.request.body
-        const result = await this.ctx.model.JobDetail.find().skip((currentPage - 1)*pageSize).limit(pageSize).populate({path: 'second_type', select:'title'});
+        const { pageSize = 10, currentPage = 1, address, second_type, title } = this.ctx.request.body
+        const match = {}
+        if(address) match.address = address
+        if(second_type) {
+            match['secondType.title'] = second_type
+        }
+        if(title) match.title = title
+        const list = await this.ctx.model.JobDetail.aggregate([
+            {
+                $lookup: {
+                    from: 'jobsecondtypes',
+                    localField: 'second_type',
+                    foreignField: '_id',
+                    as: 'secondType'
+                }
+            },
+            { $skip : (currentPage - 1)*pageSize },
+            { $limit : pageSize },
+            {
+                $project: {
+                    _id: 1,
+                    title: 1,
+                    update_time: 1,
+                    address: 1,
+                    job_require: 1,
+                    job_desc: 1,
+                    'secondType.title': 1,
+                    'secondType._id': 1
+                }
+            },
+            {
+                $unwind: '$secondType'
+            },
+            {
+                $match: match
+            }
+        ])
+        const total =  await this.ctx.model.JobDetail.count()
+        const result ={ list, pagination: { pageSize, currentPage, total } }
         this.success(result)
     }
 
     //新增职位
     async addJob() {
-        const { title, sort, first_type } = this.ctx.request.body
+        const { title, second_type, job_desc, job_require, address } = this.ctx.request.body
         const info = await this.ctx.model.JobDetail.findOne({title})
         if(info) {
             this.ctx.body = {code: 1, msg: '该职位已存在'}
         }
         try{
-            let result = await this.ctx.model.JobDetail.create({title, sort, first_type})
+            let result = await this.ctx.model.JobDetail.create({title, second_type, job_desc, job_require, address})
             this.success(result)  
         }catch (err) {
             if(err) {
@@ -128,9 +165,9 @@ class JobController extends Controller {
 
     //删除职位
     async removeJob() {
-        const { title } = this.ctx.request.body;
+        const { _id } = this.ctx.request.body;
         try {
-            let result = await this.ctx.model.JobDetail.remove({title})
+            let result = await this.ctx.model.JobDetail.remove({_id})
             this.success(result)
         }catch (err) {
             if(err) {
@@ -143,7 +180,7 @@ class JobController extends Controller {
     async updateJobDetail() {
         const { title, second_type, job_desc, job_require, address, _id } = this.ctx.request.body
         try {
-            let result = this.ctx.model.JobDetail.findByIdAndUpdate(_id, { title, second_type, job_desc, job_require, address })
+            let result = await this.ctx.model.JobDetail.findByIdAndUpdate(_id, { title, second_type, job_desc, job_require, address })
             this.success(result)
         }catch (err) {
             if(err) {

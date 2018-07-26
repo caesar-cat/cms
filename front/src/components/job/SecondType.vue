@@ -139,23 +139,24 @@ export default {
     };
   },
 
-  mounted() {
+  async mounted() {
     this.loading = true;
-    request("/job/second_type/fetch", {
+    this.options = await request("/job/first_type/fetch", {
       method: 'POST'
     }).then(res => {
-      this.loading = false;
-      this.tableData = _.cloneDeep(res.result);
-      this.cache = _.cloneDeep(res.result);
-    });
-    request("/job/first_type/fetch", {
-      method: 'POST'
-    }).then(res => {
-      this.options = res.result.map(item => ({
+      return res.result.map(item => ({
         label: item.title,
         value: item._id
       }))
     })
+    const result = await request("/job/second_type/fetch", {
+      method: 'POST'
+    }).then(res => {
+      return res.result
+    });
+    this.tableData = _.cloneDeep(result);
+    this.cache = _.cloneDeep(result);
+    this.loading = false;
   },
 
   methods: {
